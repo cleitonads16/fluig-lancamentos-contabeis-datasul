@@ -1,0 +1,847 @@
+<html>
+<head>
+	<link type="text/css" rel="stylesheet" href="/style-guide/css/fluig-style-guide.min.css"/>
+	<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;700&display=swap" rel="stylesheet"/>
+	<link type="text/css" rel="stylesheet" href="w3.css"/>
+	<link type="text/css" rel="stylesheet" href="custom.css"/>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/jquery/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="/portal/resources/js/mustache/mustache-min.js"></script>
+	<script type="text/javascript" src="/style-guide/js/fluig-style-guide.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+	
+</head>
+<body>
+<div class="fluig-style-guide">
+<form name="form" role="form">
+	<input type="hidden" name="aprov_controller" id="aprov_controller"/>
+	<input type="hidden" name="numero_solicitacao" id="numero_solicitacao"/>
+	<input type="hidden" name="numero_documento" id="numero_documento"/>
+	<input type="hidden" name="code_activity" id="code_activity"/>	
+	<input type="hidden" name="num_sc_rervertida" id="num_sc_rervertida"/>	
+	<input type="hidden" name="erro_integracao" id="erro_integracao"/>	
+	<input type="hidden" name="matriculaFluig" id="matriculaFluig"/>
+	<input type="hidden" name="emailFluigAprov" id="emailFluigAprov"/>
+	<input type="hidden" name="emailFluigSolicitante" id="emailFluigSolicitante"/>
+	<input type="hidden" name="url_atual" id="url_atual"/>
+	<input type="hidden" name="documentGedId" id="documentGedId"/>
+	<input type="hidden" name="status" id="status"/>
+	<input type="hidden" name="opcao" id="opcao"/>
+	<input type="hidden" name="serieNota" id="serieNota"/>	
+	<input type="hidden" name="codigoFornecedor" id="codigoFornecedor"/>
+	<input type="hidden" name="set_value_motivo" id="set_value_motivo"/>
+	<input type="hidden" name="set_value_aprov_area" id="set_value_aprov_area"/>
+	<input type="hidden" name="set_value_origem_dados" id="set_value_origem_dados"/>
+	<input type="hidden" name="set_value_gestor_aprov" id="set_value_gestor_aprov"/>
+	<input type="hidden" name="set_value_analis_contabil" id="set_value_analis_contabil"/>
+	<input type="hidden" name="set_value_aprov_contabil" id="set_value_aprov_contabil"/>
+	<input type="hidden" name="set_value_aprov_controller" id="set_value_aprov_controller"/>
+	<input type="hidden" name="set_cod_item" id="set_cod_item"/>
+	<input type="hidden" name="analista_contabil" id="analista_contabil"/>
+	<div class="panel panel-primary"><!-- Cabeçalho -->
+		<div class="panel-body">
+		   <div class="text-center col-md-12 col-xs-12">
+			  <h1>Solicitação de Lançamentos Contábeis</h1>
+		   </div>
+		</div>
+	 </div>
+	 <div class="panel panel-success">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-document-square icon-sm"></i> CABEÇALHO</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="form-group col-md-2 has-info hide" id="div_num_doc_form">
+					<label class="control-label">Número do Documento</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-enrollment-verified icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="num_doc_form" id="num_doc_form" class="form-control" readonly/>
+					</div>
+				</div>								
+				<div class="form-group col-md-4" id="div_responsavel">
+					<label class="control-label">Responsável</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-user icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="responsavel" id="responsavel" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label">Data da solicitação</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-calendar icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="data_solicitacao" id="data_solicitacao" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-2">
+					<label class="control-label">Data do lançamento</label>
+					<div class="input-group required">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-calendar icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="data_l" id="data_l" class="form-control"/>
+					</div>
+				</div>
+				<div class="form-group col-md-4" id="div_nome_lancamento">
+					<label class="control-label">Nome do lançamento</label>
+					<div class="input-group required">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-enrollment-verified icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="nome_l" id="nome_l" class="form-control"/>
+					</div>
+				</div>								
+			</div>
+			<div class="row">				
+				<div class="form-group provisao col-md-4">
+					<label class="control-label">Motivo do lançamento</label>
+					<div class="input-group required">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-checked icon-sm" aria-hidden="true"></i></div>
+						<select name="motivo_l" id="motivo_l" class="form-control">
+							<option value="">Selecione</option>
+							<option class="1" value="1">1 - Ajuste de conciliação</option>
+							<option class="2" value="2">2 - Provisão</option>
+							<option class="3" value="3">3 - Reversão</option>
+							<option class="4" value="4">4 - Processo de custeio</option>
+							<option class="5" value="5">5 - Fechamento contábil mensal</option>
+							<option class="6" value="6">6 - Ajuste de auditoria</option>
+							<option class="7" value="7">7 - Rateio</option>
+							<option class="99" value="99">99 - Outros</option>
+						 </select>
+					</div>
+				</div>
+				<div class="form-group hide col-md-3" id="div_area_aprov">
+					<label class="control-label">Área para aprovação</label>
+					<div class="input-group required">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-checked icon-sm" aria-hidden="true"></i></div>
+						<select name="area_aprov" id="area_aprov" class="form-control" dataset="ds_area_aprov_lc_contabil" datasetkey="CODIGO" datasetvalue="DESCRICAO" addBlankLine="true"></select>
+					</div>
+				</div>
+				<div class="form-group provisao col-md-4">
+					<label class="control-label">Origem dos dados</label>
+					<div class="input-group required">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-checked icon-sm" aria-hidden="true"></i></div>
+						<select name="tipo_l" id="tipo_l" class="form-control">
+							<option value="">Selecione</option>
+							<option value="manual">Manual</option>
+							<option value="upload">Upload</option>
+							<option value="solicitacao">Número de Solicitação</option>
+						 </select>
+					</div>
+				</div>								
+				<div class="form-group provisao col-md-4">
+					<label class="control-label">Aprovador Contábil</label>
+					<div class="required">
+						<div class="input-group col-md-12">
+							<input 
+								type="zoom" 
+								name="aprov_contabil" 
+								id="aprov_contabil" 
+								class="form-control"
+								data-zoom="{
+									'displayKey':'NOME',
+									'datasetId':'ds_aprov_contabil',
+									'fields':[{
+									'field':'NOME',
+									'label':'NOME',
+									'visible':'true'
+									},{
+									'field':'EMAIL',
+									'label':'EMAIL',
+									'visible':'false'
+									},{
+									'field':'MATRICULA',
+									'label':'MATRICULA',
+									'visible':'false'
+									}
+									]}"
+								/>
+						</div>						
+					</div>
+				</div>
+			</div><br>
+			<div class="row" id="div_num_nf">
+				<h3 id="modo_lancH3Nf" class="text-center">Nota Fiscal</h3>
+				<hr id="modo_lancHrNf">	
+				<div class="form-group col-md-4">
+					<label class="control-label labelRateio">Número NF</label>
+					<div class="input-group required colorRateio">
+						<input type="text" name="numeroNf" id="numeroNf" class="form-control" maxlength="9"/>
+						<div class="input-group-addon"><i class="fluigicon fluigicon-login icon-sm" aria-hidden="true"></i></div>
+					</div>
+				</div>
+				<div class="col-md-3 colorRateio">
+					<label class="control-label required"><span class="labelRateio">Série</span></label>
+					<div class="input-group col-md-12">
+						<input 
+						type="zoom" 
+						name="serie" 
+						id="serie" 
+						class="form-control"
+						data-zoom="{
+							'displayKey':'SERIE',
+							'datasetId':'ds_zoom_serie',
+							'placeholder':'Selecione a série',
+							'fields':[{
+								'field':'SERIE',
+								'label':'SÉRIE',
+								'visible':'true'
+							}
+						]}"
+					/>			
+					</div>								
+				</div>				
+				<div class="col-md-4 colorRateio">
+					<label class="control-label label_rateio required "><span class="labelRateio">Código do Fornecedor</span></label>
+					<div class="input-group col-md-12">
+						<input 
+						type="zoom" 
+						name="codFornecedor" 
+						id="codFornecedor" 
+						class="form-control"
+						data-zoom="{
+							'displayKey':'CODIGO',
+							'datasetId':'ds_codFornecedorLc',
+							'placeholder':'Selecione o código do fornecedor',
+							'fields':[{
+								'field':'CODIGO',
+								'label':'CÓDIGO',
+								'visible':'true'
+							},{
+								'field':'NOME',
+								'label':'NOME',
+								'visible':'true'
+							}
+						]}"
+					/>
+					</div>
+					
+				</div>				
+				<div class="form-group col-md-1 d-flex align-items-end justify-content-end padding">
+					<button type="button" class="btn" id="btn_itemNota" data-toggle="tooltip" title="Clique para buscar os dados da nota fiscal">
+						<i class="fluigicon fluigicon-search" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div><br>
+			<div class="row hide" id="div_itens_nota">
+				<h3 id="modo_lancH3Item">Itens</h3>
+				<hr id="modo_lancHrItem">
+				<div id="div_tabela_itens">
+					<div class="table-responsive-vertical shadow-z-1">
+						<div class="col-md-12">
+							<div class="form-field table-responsive" data-type="tabledetail" data-show-properties="" data-field-name="tabledetail">
+								<table class="table table-bordered table-hover" cellspacing="0" tablename="itens" noaddbutton=true nodeletebutton=true id="tabItens">
+									<thead>
+										<tr class="tableHeadRow">
+											<th class="col-md-3 text-center">ITEM</th>
+											<th class="col-md-2 text-center">CONTA CONTÁBIL</th>
+											<th class="col-md-2 text-center">CENTRO DE CUSTO</th>
+											<th class="col-md-3 text-center">VALOR</th>
+											<th class="col-md-1 text-center">ESTABELECIMENTO</th>
+											<th class="col-md-1 text-center col_ratear">RATEAR</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>
+												<input class="form-control tbRateioItem" type="text" name="tbRateioItem" id="tbRateioItem" readonly="readonly" style="background: transparent; border: transparent;">
+											</td>
+											<td>
+												<input class="form-control tbRateioConta" type="text" name="tbRateioConta" id="tbRateioConta" readonly="readonly" style="background: transparent; border: transparent;">
+											</td>
+											<td>
+												<input class="form-control tbRateioCC" type="text" name="tbRateioCC" id="tbRateioCC" readonly="readonly" style="background: transparent; border: transparent;">
+											</td>								
+											<td>
+												<input class="form-control tbRateioValor" type="text" name="tbRateioValor" id="tbRateioValor" readonly="readonly" style="background: transparent; border: transparent;">
+											</td>								
+											<td>
+												<input class="form-control tbRateioEstabelecimento" type="text" name="tbRateioEstabelecimento" id="tbRateioEstabelecimento" readonly="readonly" style="background: transparent; border: transparent;">
+											</td>
+											<td class="col_ratear" style="text-align: center;">
+												<button class="btn btnRateio" id="btnRateio" name="btnRateio" onclick="iniciarRateioItens(this)" data-toggle="tooltip" title="Clique para iniciar o rateio">
+													<i class="fluigicon fluigicon-money-circle icon-sm" aria-hidden="true"></i>
+												</button>																											
+											</td>								
+										</tr>
+									</tbody>
+								</table>
+							 <div id="pagination_itens" class="text-center"></div>
+							</div>
+						</div>
+					</div>
+				</div>				
+			</div><br>
+			<div class="row" id="div_modo_lancamento">
+				<div class="col-md-4 col-lg-offset-2 text-center hide" id="div_upload">
+					<div class="custom-file-upload">
+						<input type="file" name="planilha" id="planilha" style="display: none;">
+						<div class="file-input-display">
+							<span class="file-text" id="file-text">Nenhum arquivo escolhido</span>
+							<button type="button" class="file-button" onclick="document.getElementById('planilha').click();">
+								Escolher Arquivo
+							</button>
+						</div>
+					</div>					
+				</div>				
+				<div class="col-md-4 hide" id="div_download">
+					<button type="button" class="btn-download" onclick="downloadPlanilha()">
+						<i class="fluigicon fluigicon-download icon-sm"></i> Download da planilha padrão para upload
+					</button>
+				</div>												
+				<div class="form-group col-md-4 col-lg-offset-4 text-center hide required" id="div_consult_sc">
+					<label class="control-label">Digite o número da solicitação</label>					
+					<input 
+						type="zoom" 
+						name="consulta_numero_sc" 
+						id="consulta_numero_sc" 
+						class="form-control"
+						data-zoom="{
+							'displayKey':'ID_SOLICITACAO',
+							'datasetId':'ds_cod_solic_reversao',
+							'fields':[
+								{
+									'field':'ID_SOLICITACAO',
+									'label':'NÚMERO DA SOLICITAÇÃO FLUIG'
+								}
+							]
+						}"
+					/>					
+				</div>		
+			</div><br>
+			<div class="row">
+				<div class="col-md-4 col-lg-offset-4 text-center hide" id="div_bottons">
+					<button type="button" id="btn_add_conta" class="btn btn-download" onclick="abreFecha('id01','','inclusao')">Adicionar Conta</button>
+				</div>
+			</div><br>
+
+			<!--Inicio Modal-->
+
+			<div id="id01" class="w3-modal">
+				<div class="w3-modal-content w3-animate-left w3-card-2">
+					<header class="w3-container w3-teal" style="border-bottom: 2px solid #f8c400;">
+						<div class="w3-center text-center">
+							<h2>Lançamento Contábil - Manual</h2>
+						</div>
+					</header><br>
+					<div class="w3-container">
+						<div class="row">
+							<div class="form-group required col-md-5">
+								<label class="control-label Modal" for="codigo_conta">Conta</label>
+								<div class="input-group col-md-12">
+									<input 
+										type="zoom" 
+										name="codigo_conta_modal" 
+										id="codigo_conta_modal" 
+										class="form-control obrigatorioModal" 
+										data-zoom="{
+											'displayKey':'CODIGO',
+											'datasetId':'ds_zoom_conta_contabil_All',
+											'fields':[
+												{
+													'field':'CODIGO',
+													'label':'CÓDIGO',
+													'search':'true'
+												},{
+													'field':'DESCRICAO',
+													'label':'DESCRIÇÃO',
+													'search':'true'
+												}
+											]
+										}"
+									/>	
+								</div>
+														
+							</div>
+							<div class="form-group col-md-2">
+								<label class="control-label" for="credito_debito_modal">D/C</label>
+								<div class="input-group required">
+									<input class="form-control credito_debito_modal" type="text" name="credito_debito_modal" id="credito_debito_modal" maxlength="1" title="Insira C para Crédito e D para Débito"/>	
+									<div class="input-group-addon"><i class="fluigicon fluigicon-manual-scores icon-sm" aria-hidden="true"></i></div>
+									
+								</div>									                      	
+							</div>
+							<div class="form-group col-md-5">
+								<label class="control-label Modal" for="centro_custo">Centro de Custo</label>
+								<div class="input-group col-md-12">
+									<input 
+										type="zoom" 
+										name="centro_custo_modal" 
+										id="centro_custo_modal" 
+										class="form-control obrigatorioModal" 
+										data-zoom="{
+											'displayKey':'CODIGO',
+											'datasetId':'ds_zoom_centro_custo_off',
+											'fields':[
+												{
+													'field':'CODIGO',
+													'label':'CÓDIGO',
+													'search':'true'
+												},{
+													'field':'DESCRICAO',
+													'label':'DESCRIÇÃO',
+													'search':'true'
+												}
+											]
+										}"
+									/>
+								</div>
+															
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-6">
+								<label class="control-label" for="valor_modal">Valor</label>
+								<div class="input-group required">
+									<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+									<input class="form-control valor_modal" type="text" name="valor_modal" id="valor_modal"/>
+								</div>
+										                      	
+							</div>
+							<div class="form-group col-md-6">
+								<label class="control-label Modal" for="centro_custo">Estabelecimento</label>
+								<div class="input-group required col-md-12">
+									<input 
+										type="zoom" 
+										name="estabelecimento_modal" 
+										id="estabelecimento_modal" 
+										class="form-control obrigatorioModal" 
+										data-zoom="{
+											'displayKey':'ESTABELECIMENTO',
+											'datasetId':'ds_estabelecimento_sinc',
+											'fields':[
+												{
+													'field':'ESTABELECIMENTO',
+													'label':'CÓDIGO',
+													'search':'true'
+												},{
+													'field':'NOME_UNIDADE',
+													'label':'NOME',
+													'search':'true'
+												}
+											]
+										}"
+									/>
+								</div>
+															
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group required col-md-12">
+								<label class="control-label" for="historico_modal">Histórico</label>
+								<div class="input-group col-md-12">
+									<textarea name="historico_modal" id="historico_modal" class="form-control obrigatorioModal" rows="2"></textarea>
+								</div>										                      	
+							</div>
+						</div>
+						<div class="row">
+						<div class="col-md-12" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+							<button class="btnSalvar" type="submit" id="btnAddModal" onclick="addItens(this);">SALVAR</button>
+					<button class="btnFechar" type="submit" onclick="abreFecha('','id01');apresentaBotao();limpaCamposModal();">FECHAR</button>	
+						</div>
+					</div>
+					</div>			    					      	
+				</div>
+				<footer class="w3-container w3-teal">						          
+				</footer>
+			</div>
+
+			<div id="id02" class="w3-modal">
+				<div class="w3-modal-content w3-animate-left w3-card-2">
+					<header class="w3-container w3-tealId02" style="border-bottom: 2px solid #f8c400;">
+						<div class="w3-center text-center">
+							<h2>Rateio - Lançamento Contábil</h2>
+						</div>
+					</header><br>
+					<div class="w3-container">
+						<div class="row">
+							<div class="form-group col-md-5">
+								<label class="control-label Modal" for="codigo_conta_id02">Conta</label>
+								<div class="input-group col-md-12">
+									<input 
+										type="zoom" 
+										name="codigo_conta_modal_id02" 
+										id="codigo_conta_modal_id02" 
+										class="form-control obrigatorioModal" 
+										data-zoom="{
+											'displayKey':'CODIGO',
+											'datasetId':'ds_zoom_conta_contabil_All',
+											'fields':[
+												{
+													'field':'CODIGO',
+													'label':'CÓDIGO',
+													'search':'true'
+												},{
+													'field':'DESCRICAO',
+													'label':'DESCRIÇÃO',
+													'search':'true'
+												}
+											]
+										}"
+									/>		
+								</div>													
+							</div>
+							<div class="form-group col-md-2">
+								<label class="control-label" for="credito_debito_modal_id02">D/C</label>
+								<div class="input-group">
+									<input class="form-control credito_debito_modal_id02" type="text" name="credito_debito_modal_id02" id="credito_debito_modal_id02" maxlength="1" title="Insira C para Crédito e D para Débito"/>	
+									<div class="input-group-addon"><i class="fluigicon fluigicon-manual-scores icon-sm" aria-hidden="true"></i></div>
+									
+								</div>									                      	
+							</div>
+							<div class="form-group col-md-5">
+								<label class="control-label Modal" for="centro_custo_id02">Centro de Custo</label>
+								<div class="required">
+									<div class="input-group col-md-12">
+										<input 
+											type="zoom" 
+											name="centro_custo_modal_id02" 
+											id="centro_custo_modal_id02" 
+											class="form-control obrigatorioModal" 
+											data-zoom="{
+												'displayKey':'CODIGO',
+												'datasetId':'ds_zoom_centro_custo_off',
+												'fields':[
+													{
+														'field':'CODIGO',
+														'label':'CÓDIGO',
+														'search':'true'
+													},{
+														'field':'DESCRICAO',
+														'label':'DESCRIÇÃO',
+														'search':'true'
+													}
+												]
+											}"
+										/>
+									</div>	
+								</div>																				
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-4">
+								<label class="control-label" for="valorItem_modal_id02">Valor total do item</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+									<input class="form-control valorItem_modal_id02" type="text" name="valorItem_modal_id02" id="valorItem_modal_id02" readonly/>
+								</div>										                      	
+							</div>
+							<div class="form-group col-md-3">
+								<label class="control-label" for="valor_modal_id02">Valor do rateio</label>
+								<div class="input-group required">
+									<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+									<input class="form-control valor_modal_id02" type="text" name="valor_modal_id02" id="valor_modal_id02" onkeyup="calcularPorcentagem()" />
+								</div>										                      	
+							</div>
+							<div class="form-group col-md-2">
+								<label class="control-label" for="percentualModal_id02">Percentual</label>
+								<div class="input-group required">
+									<input class="form-control percentualModal_id02" type="text" name="percentualModal_id02" id="percentualModal_id02" onkeyup="calcularValorRateio()"/>
+									<div class="input-group-addon"><i class="flaticon flaticon-discount icon-sm" aria-hidden="true"></i></div>
+								</div>										                      	
+							</div>
+							<div class="form-group col-md-3">
+								<label class="control-label Modal" for="centro_custo_id02">Estabelecimento</label>
+								<div class="input-group col-md-12">
+									<input 
+										type="zoom" 
+										name="estabelecimento_modal_id02" 
+										id="estabelecimento_modal_id02" 
+										class="form-control obrigatorioModal" 
+										data-zoom="{
+											'displayKey':'ESTABELECIMENTO',
+											'datasetId':'ds_estabelecimento_sinc',
+											'fields':[
+												{
+													'field':'ESTABELECIMENTO',
+													'label':'CÓDIGO',
+													'search':'true'
+												},{
+													'field':'NOME_UNIDADE',
+													'label':'NOME',
+													'search':'true'
+												}
+											]
+										}"
+									/>
+								</div>															
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-lg-offset-3 col-md-3">
+								<label class="control-label" for="saldo_id02">Saldo a ratear</label>
+								<div class="input-group">
+									<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+									<input class="form-control saldo_id02" type="text" name="saldo_id02" id="saldo_id02" readonly/>
+								</div>										                      	
+							</div>
+							<div class="form-group col-md-3">
+								<label class="control-label" for="percentRatear_id02">Percentual a retear</label>
+								<div class="input-group">
+									<input class="form-control percentRatear_id02" type="text" name="percentRatear_id02" id="percentRatear_id02" readonly/>
+									<div class="input-group-addon"><i class="flaticon flaticon-discount icon-sm" aria-hidden="true"></i></div>
+								</div>										                      	
+							</div>
+						</div>
+						<div class="row">
+							<div class="form-group col-md-12">
+								<label class="control-label" for="historico_modal_id02">Histórico</label>
+								<div class="input-group required col-md-12">
+									<textarea name="historico_modal_id02" id="historico_modal_id02" class="form-control obrigatorioModal_id02" rows="2"></textarea>
+								</div>										                      	
+							</div>
+						</div>
+						<div class="row">
+						<div class="col-md-12" style="text-align: center; margin-top: 20px; margin-bottom: 20px;">
+							<button class="btnSalvar" type="submit" id="btnAddModal_id02" onclick="addItens(this);">SALVAR</button>
+							<button class="btnFechar" type="button" onclick="abreFecha('','id02');limpaCamposModal();">FECHAR</button>	
+						</div>
+					</div>
+					</div>			    					      	
+				</div>
+				<footer class="w3-container w3-teal">						          
+				</footer>
+			</div>
+		 
+			<!--Fim modal-->
+
+			<div class="row hide" id="div_tabela">
+				<!-- <div class="panel-heading panel-verde">
+					<h3 class="panel-title">LANÇAMENTOS</h3>
+				</div><br> -->
+				<h3 id="modo_lancH3">Lançamentos</h3>
+				<hr id="modo_lancHr">		
+				<div class="table-responsive-vertical shadow-z-1">
+					<div class="col-md-12">
+					   <div class="form-field table-responsive" data-type="tabledetail" data-show-properties="" data-field-name="tabledetail">
+						  <table class="table table-bordered table-hover" cellspacing="0" tablename="contas" noaddbutton=true nodeletebutton=true id="tabContas">
+							 <thead>
+								<tr class="tableHeadRow">
+								   <th class="col-md-2 text-center">CONTA</th>								   
+								   <th class="col-md-1 text-center">D/C</th>								  								  
+								   <th class="col-md-2 text-center">CENTRO DE CUSTO</th>								   
+								   <th class="col-md-2 text-center">VALOR</th>
+								   <th class="col-md-2 text-center percentual hide">PERCENTUAL</th>
+								   <th class="col-md-1 text-center">ESTABELECIMENTO</th>
+								   <th class="col-md-2 text-center">HISTÓRICO</th>
+								   <th class="col-md-2 text-center w3-centerRei remove">AÇÃO</th>
+								</tr>
+							 </thead>
+							 <tbody>
+								<tr>
+									<td>
+										<input class="form-control tb_conta" type="text" name="tb_conta" id="tb_conta" readonly="readonly" style="background: transparent; border: transparent;">
+										<input type="hidden" name="codigo_conta" id="codigo_conta" class="codigo_conta"/>
+										<input type="hidden" name="item_rateado" id="item_rateado" class="item_rateado"/>
+									
+									</td>									
+									<td>
+										<input class="form-control tb_credito_debito" type="text" name="tb_credito_debito" id="tb_credito_debito" readonly="readonly" style="background: transparent; border: transparent;">
+									</td>									
+									<td>
+										<input class="form-control tb_cc" type="text" name="tb_cc" id="tb_cc" readonly="readonly" style="background: transparent; border: transparent;">
+										<input type="hidden" name="codigo_cc" id="codigo_cc" class="codigo_cc"/>
+									</td>									
+									<td>
+										<input class="form-control tb_valor" type="text" name="tb_valor" id="tb_valor" readonly="readonly" style="background: transparent; border: transparent;">
+										<input type="hidden" name="montante_valor" id="montante_valor" class="montante_valor"/>
+									</td>
+									<td class="percentual hide">
+										<input class="form-control tb_percentualRateio" type="text" name="tb_percentualRateio" id="tb_percentualRateio" readonly="readonly" style="background: transparent; border: transparent;">
+									</td>								
+									<td>
+										<input class="form-control tb_estabelecimento" type="text" name="tb_estabelecimento" id="tb_estabelecimento" readonly="readonly" style="background: transparent; border: transparent;">
+										<input type="hidden" name="codigo_estab" id="codigo_estab" class="codigo_estab"/>
+									</td>
+									<td>
+										<textarea class="form-control tb_historico" type="text" name="tb_historico" id="tb_historico"  rows="2" maxlength="500" readonly="readonly" style="background: transparent; border: transparent;"></textarea>
+									</td>
+									<td class="w3-centerRei remove">
+										<button class="btn btn-forms-primary btnAltera" id="btnAltera" name="btnAltera" onclick="editaItens(this)" data-toggle="tooltip" title="Editar conta">
+											<i class="fluigicon fluigicon-fileedit icon-sm" aria-hidden="true"></i>
+										</button>										
+										<button class="btn btn-danger botoesPaiFilho"  id="btnFilhoDelet" name="btnFilhoDelet"  data-toggle="tooltip" title="Excluir conta" onclick="fnWdkRemoveChild(this); valueTotalAccount();">
+											<i class="fluigicon fluigicon-trash icon-sm" aria-hidden="true"></i>
+										</button>                                       
+									 </td>
+								</tr>
+							 </tbody>
+						  </table>							
+							<div id="pagination-container">
+								<div id="pagination">
+								</div>
+							</div>
+							
+					   </div>
+					</div>					
+				</div>
+			</div><br>
+			
+			<div class="row">
+				<div class="form-group col-md-2 col-lg-offset-4 has-success text-center hide" id="div_valor_total_credito">
+					<label class="control-label">Valor Total de Crédito</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="valor_total_credito" id="valor_total_credito" class="form-control"  readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-2 text-center has-warning hide" id="div_valor_total_debito">
+					<label class="control-label">Valor Total de Débito</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-money icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="valor_total_debito" id="valor_total_debito" class="form-control"  readonly/>
+					</div>
+				</div>				
+			</div><br>
+		 </div>
+	 </div>
+	 <div class="panel panel-success" id="div_aprov_gestor">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-process icon-sm"></i> APROVAÇÃO - GESTOR DA ÁREA</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="control-label">Responsável</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-user icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="responsavel_gestor" id="responsavel_gestor" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label">Aprovar Solicitação</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-check-circle-on icon-sm" aria-hidden="true"></i></div>
+						<select name="option_aprov_gestor" id="option_aprov_gestor" class="form-control">
+							<option value="">SELECIONE</option>
+							<option value="aprovado">APROVADO</option>
+							<option value="reprovado">REPROVADO</option>
+						 </select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 hide" id="div_motivo_reprov_gestor">
+					<label class="control-label " for="justificativa">Informe o motivo da reprovação</label>
+					<textarea name="motivo_reprov_gestor" id="motivo_reprov_gestor" class="form-control" rows="6"></textarea>                                                
+				 </div>
+			</div>
+		 </div>
+	 </div>
+	 <div class="panel panel-success" id="div_analise_contabil">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-process icon-sm"></i> ANÁLISE - CONTÁBIL</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="control-label">Responsável</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-user icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="responsavel_analise_contabil" id="responsavel_analise_contabil" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label">Informe o status da análise</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-check-circle-on icon-sm" aria-hidden="true"></i></div>
+						<select name="option_analise_contabil" id="option_analise_contabil" class="form-control">
+							<option value="">SELECIONE</option>
+							<option value="concluido">CONCLUÍDO</option>
+							<option value="corrigir">CORRIGIR</option>
+						 </select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 hide" id="div_motivo_reprov_analis_cont">
+					<label class="control-label " for="justificativa">Informe o motivo da reprovação</label>
+					<textarea name="motivo_reprov_analis_cont" id="motivo_reprov_analis_cont" class="form-control" rows="6"></textarea>                                                
+				 </div>
+			</div>
+		 </div>
+	 </div>
+	 <div class="panel panel-success" id="div_aprov_contabil">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-process icon-sm"></i> APROVAÇÃO - CONTÁBIL</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="control-label">Responsável</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-user icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="responsavel_aprov_1" id="responsavel_aprov_1" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label">Aprovar Solicitação</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-check-circle-on icon-sm" aria-hidden="true"></i></div>
+						<select name="option_aprov_1" id="option_aprov_1" class="form-control">
+							<option value="">SELECIONE</option>
+							<option value="aprovado">APROVADO</option>
+							<option value="reprovado">REPROVADO</option>
+						 </select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 hide" id="div_motivo_reprovacao_1">
+					<label class="control-label " for="justificativa">Informe o motivo da reprovação</label>
+					<textarea name="motivo_reprovacao_1" id="motivo_reprovacao_1" class="form-control" rows="6"></textarea>                                                
+				 </div>
+			</div>
+		 </div>
+	 </div>
+	 <div class="panel panel-success" id="div_aprov_controller">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-process icon-sm"></i> APROVAÇÃO - CONTROLLER</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="form-group col-md-6">
+					<label class="control-label">Responsável</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-user icon-sm" aria-hidden="true"></i></div>
+						<input type="text" name="responsavel_aprov_2" id="responsavel_aprov_2" class="form-control" readonly/>
+					</div>
+				</div>
+				<div class="form-group col-md-6">
+					<label class="control-label">Aprovar Solicitação</label>
+					<div class="input-group">
+						<div class="input-group-addon"><i class="fluigicon fluigicon-check-circle-on icon-sm" aria-hidden="true"></i></div>
+						<select name="option_aprov_2" id="option_aprov_2" class="form-control">
+							<option value="">SELECIONE</option>
+							<option value="aprovado">APROVADO</option>
+							<option value="reprovado">REPROVADO</option>
+						 </select>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12" id="div_motivo_reprovacao_2">
+					<label class="control-label " for="justificativa">Informe o motivo da reprovação</label>
+					<textarea name="motivo_reprovacao_2" id="motivo_reprovacao_2" class="form-control" rows="6"></textarea>                                                
+				 </div>
+			</div>
+		 </div>
+	 </div>
+	 <div class="panel panel-success" id="div_arquivo">
+		<div class="panel-heading">
+			<h3 class="panel-title" id="legenda_painel"><i class="fluigicon fluigicon-process icon-sm"></i>&nbsp;ACESSO AO ARQUIVO DE LOG</h3>
+		 </div>
+		 <div class="panel-body">
+			<div class="row">
+				<div class="col-md-4 col-lg-offset-4 text-center">					
+					<button type="button" class="btn btn-info d-flex align-items-center gap-2" id="btn_file_view">
+						<i class="fluigicon fluigicon-eye-open icon-md" aria-hidden="true" style="vertical-align: middle; margin-right: 5px;"></i>
+						Visualizar Arquivo
+					  </button>
+				</div>
+			</div>
+		 </div>
+	 </div>
+</form>
+</div>
+<script type="text/javascript" src="jquery.mask.min.js"></script>
+<script type="text/javascript" src="custom.js"></script>
+<script type="text/javascript" src="beforeSendValidate.js"></script>
+</body>
+</html>
